@@ -83,7 +83,20 @@ def showCreateAccountMenu():
     name = input("Enter your account name: ")
     password = input("Enter your account password: ")
 
-     
+def GetUser(name, account_type):
+    if account_type == "M":
+        table = "Members"
+    else:
+        table = "Trainers"
+
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM {table} WHERE name = %s AND password = %s", (name, password))
+    output = cursor.fetchall()
+    cursor.close()
+    return len(output) == 1
+
+
+
 
 def showMemberMenu():
     print("Hi member %s", current_user)

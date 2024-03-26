@@ -4,7 +4,10 @@ CREATE DATABASE HealthAndFitnessClubManagementSystem;
 -- Members Table
 CREATE TABLE Members (
     name VARCHAR(255) PRIMARY KEY,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    current_weight INTEGER NOT NULL,
+    goal_weight INTEGER NOT NULL,
+    goal_date DATE NOT NULL
 );
 
 -- Member Notifications Table
@@ -35,6 +38,8 @@ CREATE TABLE Sessions (
 );
 
 CREATE TABLE Classes (
+    class_id SERIAL PRIMARY KEY
+
 
 );
 

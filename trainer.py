@@ -28,11 +28,20 @@ def showTrainerMenu(connection, current_user):
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            ScheduleManagement(connection, current_user)
+            try:
+                ScheduleManagement(connection, current_user)
+            except Exception as e:
+                print("Error updating schedule, ", e)
         elif choice == "2":
-            MemberProfileViewing(connection, current_user)
+            try:
+                MemberProfileViewing(connection, current_user)
+            except Exception as e:
+                print("Error viewing member profile, ", e)
         elif choice == "3":
-            db_application.ViewNotifications(connection, current_user, "T")
+            try:
+                db_application.ViewNotifications(connection, current_user, "T")
+            except Exception as e:
+                print("Error viewing notifications, ", e)
         elif choice == "4":
             return
         else:
@@ -50,12 +59,6 @@ def ScheduleManagement(connection, current_user):
     cursor = connection.cursor()
     cursor.execute("UPDATE Trainers SET start_time = %s, end_time = %s WHERE trainer_name = %s", (start_time, end_time, current_user))
     cursor.close()
-
-def viewTrainerSchedule(connection, trainer_name):
-    data = db_application.getUser(connection, trainer_name, "T")
-    if(data == None):
-        print(f"Trainer with name {trainer_name} does not exist.")
-        return
 
 def checkAvailability(connection, session_id, trainer_name, session_start_date_time, session_end_date_time):
     data = db_application.getUser(connection, trainer_name, "T")

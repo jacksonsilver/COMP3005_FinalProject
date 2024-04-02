@@ -41,16 +41,28 @@ def showMemberMenu(connection, current_user):
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            data = db_application.getUser(connection, current_user, "M")
-            displayProfile(connection, current_user, data, "M")
+            try:
+                data = db_application.getUser(connection, current_user, "M")
+                displayProfile(connection, current_user, data, "M")
+            except Exception as e:
+                print("Error displaying profile, ", e)
         elif choice == "2":
-            displayDashboard(connection, current_user)
+            try:
+                displayDashboard(connection, current_user)
+            except Exception as e:
+                print("Error displaying dashboard, ", e)
         elif choice == "3":
             scheduleManagement(connection, current_user)
         elif choice == "4":
-            makeMaintenanceReport(connection, current_user)
+            try:
+                makeMaintenanceReport(connection, current_user)
+            except Exception as e:
+                print("Error making maintenance report, ", e)
         elif choice == "5":
-            db_application.ViewNotifications(connection, current_user, "M")
+            try:
+                db_application.ViewNotifications(connection, current_user, "M")
+            except Exception as e:
+                print("Error viewing notifications, ", e)
         elif choice == "6":
             return
         else:
@@ -69,23 +81,26 @@ def displayProfile(connection, current_user, data, account_type):
             choice = input("\nDo you want to update this information (y/n): ")
 
             if choice == "y" or choice == "Y":
-                print("You will now be prompted to change the information. Enter nothing to keep it the same.")
-                current_weight = input("Change Current Weight to: ") or data[2]
-                goal_weight = input("Change Goal Weight to: ") or data[3]
-                goal_date = input("Change Target Date to (YYYY-MM-DD): ") or data[4]
+                try:
+                    print("You will now be prompted to change the information. Enter nothing to keep it the same.")
+                    current_weight = input("Change Current Weight to: ") or data[2]
+                    goal_weight = input("Change Goal Weight to: ") or data[3]
+                    goal_date = input("Change Target Date to (YYYY-MM-DD): ") or data[4]
 
-                cursor = connection.cursor()
-                cursor.execute("UPDATE Members SET current_weight = %s, goal_weight = %s, goal_date = %s WHERE member_name = %s", (current_weight, goal_weight, goal_date, current_user))
-                cursor.close()
-                print("Profile updated.")
-
-                # New achievement if you achieved your goal weight
-                if str(current_weight) == str(goal_weight):
-                    print("hi")
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO Achievements (member_name, achievement_text) VALUES (%s, %s)", (member_name, f"Congrats, you achieved your goal weight of {goal_weight}"))
+                    cursor.execute("UPDATE Members SET current_weight = %s, goal_weight = %s, goal_date = %s WHERE member_name = %s", (current_weight, goal_weight, goal_date, current_user))
                     cursor.close()
-                return
+                    print("Profile updated.")
+
+                    # New achievement if you achieved your goal weight
+                    if str(current_weight) == str(goal_weight):
+                        print("hi")
+                        cursor = connection.cursor()
+                        cursor.execute("INSERT INTO Achievements (member_name, achievement_text) VALUES (%s, %s)", (member_name, f"Congrats, you achieved your goal weight of {goal_weight}"))
+                        cursor.close()
+                    return
+                except Exception as e:
+                    print("Error updating updating information, ", e)
             elif choice == "n" or choice == "N":
                 return
             else:
@@ -95,11 +110,14 @@ def displayProfile(connection, current_user, data, account_type):
             choice = input("\nDo you want to add an achievement (y/n): ")
 
             if choice == "y" or choice == "Y":
-                text = input("What would you like to say?: ")
-                cursor = connection.cursor()
-                cursor.execute("INSERT INTO Achievements (member_name, achievement_text) VALUES (%s, %s)", (member_name, f"From Trainer {current_user} : {text}"))
-                cursor.close()
-                print("Achievement inserted")
+                try:
+                    text = input("What would you like to say?: ")
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO Achievements (member_name, achievement_text) VALUES (%s, %s)", (member_name, f"From Trainer {current_user} : {text}"))
+                    cursor.close()
+                    print("Achievement inserted")
+                except Exception as e:
+                    print("Error inserting achievement, ", e)
             elif choice == "n" or choice == "N":
                 return
             else:
@@ -155,21 +173,27 @@ def displayDashboard(connection, current_user):
             choice = input("\n What is your choice?: ")
 
             if choice == "1":
-                text = input("Describe the routine here: ")
-                cursor = connection.cursor()
-                cursor.execute("INSERT INTO Routines (member_name, routine_text) VALUES (%s, %s)", (current_user, text))
-                cursor.close()
-                print("Routine added.")
-                return
+                try:
+                    text = input("Describe the routine here: ")
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO Routines (member_name, routine_text) VALUES (%s, %s)", (current_user, text))
+                    cursor.close()
+                    print("Routine added.")
+                    return
+                except Exception as e:
+                    print("Error adding routine, ", e)
             elif choice == "2":
                 num = input("Specify the id of the routine you would like to delete")
 
                 if num in routine_numbers:
-                    cursor = connection.cursor()
-                    cursor.execute(f"DELETE FROM ROUTINES WHERE routine_id = '{num}'")
-                    cursor.close()
-                    print(f"Routine {num} deleted.")
-                    return
+                    try:
+                        cursor = connection.cursor()
+                        cursor.execute(f"DELETE FROM ROUTINES WHERE routine_id = '{num}'")
+                        cursor.close()
+                        print(f"Routine {num} deleted.")
+                        return
+                    except Exception as e:
+                        print("Error deleting routine, ", e)
                 else:
                     print("Not a valid routine id.")
             elif choice == "3":
@@ -189,13 +213,25 @@ def scheduleManagement(connection, current_user):
         choice = input("\nEnter your choice: ")
 
         if choice == "1":
-            scheduleSession(connection, current_user)
+            try:
+                scheduleSession(connection, current_user)
+            except Exception as e:
+                print("Error scheduling a session, ", e)
         elif choice == "2":
-            rescheduleSession(connection, current_user)
+            try:
+                rescheduleSession(connection, current_user)
+            except Exception as e:
+                print("Error rescheduling a session, ", e)
         elif choice == "3":
-            cancelSession(connection, current_user)
+            try:
+                cancelSession(connection, current_user)
+            except Exception as e:
+                print("Error cancelling session, ", e)
         elif choice == "4":
-            registerClass(connection, current_user)
+            try:
+                registerClass(connection, current_user)
+            except Exception as e:
+                print("Error registering for class, ", e)
         elif choice == "5":
             return
         else:
@@ -256,7 +292,7 @@ def rescheduleSession(connection, current_user):
         print(f"id: {session[0]}, trainer: {session[2]}, start date and time: {session[3]}, end date and time: {session[4]}")
 
     while True:
-        id = input("\nEnter the id of the session you'd like reschedule (or nothing to quit): ")
+        id = input("\nEnter the id of the session you'd like to reschedule (or nothing to quit): ")
 
         if(id == ""):
             return
@@ -320,7 +356,7 @@ def cancelSession(connection, current_user):
         print(f"id: {session[0]}, trainer: {session[2]}, start date and time: {session[3]}, end date and time: {session[4]}")
 
     while True:
-        id = input("\nEnter the id of the session you'd like reschedule (or nothing to quit): ")
+        id = input("\nEnter the id of the session you'd like to cancelled (or nothing to quit): ")
 
         if(id == ""):
             return

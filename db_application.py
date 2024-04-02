@@ -30,16 +30,25 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            showLoginMenu()
+            try:
+                showLoginMenu()
+            except Exception as e:
+                print("Error logging in, ", e)
         elif choice == "2":
-            showCreateAccountMenu()
+            try:
+                showCreateAccountMenu()
+            except Exception as e:
+                print("Error creating account, ", e)
         elif choice == "3":
             name = input("\nEnter your admin name: ")
             password = input("Enter your admin password: ")
-            if verifyCredentials(name, password, "A"):
-                admin.showAdminMenu(connection)
-            else:
-                print("Invalid credentials.")
+            try:
+                if verifyCredentials(name, password, "A"):
+                    admin.showAdminMenu(connection)
+                else:
+                    print("Invalid credentials.")
+            except Exception as e:
+                print("Error verrifying credentials, ", e)
         elif choice == "4":
             connection.close()
             return

@@ -21,9 +21,15 @@ def showAdminMenu(connection):
         elif choice == "3":
             ClassScheduling(connection)
         elif choice == "4":
-            viewBillings(connection)
+            try:
+                viewBillings(connection)
+            except Exception as e:
+                print("Error viewing billings, ", e)
         elif choice == "5":
-            processBillings(connection)
+            try:
+                processBillings(connection)
+            except Exception as e:
+                print("Error processing billings, ", e)
         elif choice == "6":
             return
         else:

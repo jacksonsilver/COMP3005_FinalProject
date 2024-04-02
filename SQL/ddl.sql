@@ -16,6 +16,12 @@ CREATE TABLE Members (
     goal_date DATE NOT NULL
 );
 
+-- Member Notifications Table
+CREATE TABLE MemberNotifications (
+    member_name VARCHAR(255) REFERENCES Members(member_name),
+    notification_text TEXT NOT NULL
+);
+
 CREATE TABLE Routines (
     routine_id SERIAL PRIMARY KEY,
     member_name VARCHAR(255) REFERENCES Members(member_name),
@@ -27,10 +33,17 @@ CREATE TABLE Achievements (
     achievement_text TEXT NOT NULL
 );
 
--- Member Notifications Table
-CREATE TABLE MemberNotifications (
+CREATE TABLE Billings (
+    billing_id SERIAL PRIMARY KEY,
     member_name VARCHAR(255) REFERENCES Members(member_name),
-    notification_text TEXT NOT NULL
+    billing_text TEXT NOT NULL,
+    processed BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE Reports (
+    report_id SERIAL PRIMARY KEY,
+    member_name VARCHAR(255) REFERENCES Members(member_name),
+    report_text TEXT NOT NULL
 );
 
 -- Trainers Table
@@ -71,19 +84,6 @@ CREATE TABLE Classes (
 CREATE TABLE Participants (
     class_id INTEGER REFERENCES Classes(class_id),
     member_name VARCHAR(255) REFERENCES Members(member_name)
-);
-
-CREATE TABLE Billings (
-    billing_id SERIAL PRIMARY KEY,
-    member_name VARCHAR(255) REFERENCES Members(member_name),
-    billing_text TEXT NOT NULL,
-    processed BOOLEAN DEFAULT FALSE
-);
-
-CREATE TABLE Reports (
-    report_id SERIAL PRIMARY KEY,
-    member_name VARCHAR(255) REFERENCES Members(member_name),
-    report_text TEXT NOT NULL
 );
 
 -- Function that provides trainer notifications and then deletes them

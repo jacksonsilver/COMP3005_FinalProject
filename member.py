@@ -12,6 +12,18 @@ def createMember(connection, name, password):
     goal_date = input("When would you like to achieve your goal weight? (YYYY-MM-DD): ")
     #need to do input checking.
 
+    billing_data = input("Please enter billing info to pay $100 for sign-up membership fee (assume this will be verified): ")
+
+    if(billing_data == ""):
+        print("Billing info not approved.")
+        return
+
+    print("Billing info Approved.")
+
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO Billings (member_name, billing_text) VALUES (%s, %s)", (name, f"Member {name}'s $100 membership sign up fee, billing data: {billing_data}"))
+    cursor.close()
+
     cursor = connection.cursor()
     cursor.execute("INSERT INTO Members (member_name, password, current_weight, goal_weight, goal_date) VALUES (%s, %s, %s, %s, %s)", (name, password, current_weight, goal_weight, goal_date))
     cursor.close()

@@ -132,6 +132,9 @@ def ViewNotifications(connection, name, account_type):
     for notification in output:
         print(f"- {notification[1]}")
 
+    if len(output) == 0:
+        print("None.")
+
 
 # Creates and Connects to a new database titled HealthAndFitnessClubManagementSystem
 def connectToDatabase(username, password):

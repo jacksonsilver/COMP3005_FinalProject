@@ -1,13 +1,11 @@
 --DROP DATABASE IF EXISTS HealthAndFitnessClubManagementSystem;
 --CREATE DATABASE HealthAndFitnessClubManagementSystem;
 
--- Admins Table
 CREATE TABLE Admins (
     admin_name VARCHAR(255) PRIMARY KEY,
     password VARCHAR (255) NOT NULL
 );
 
--- Members Table
 CREATE TABLE Members (
     member_name VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
@@ -16,9 +14,20 @@ CREATE TABLE Members (
     goal_date DATE NOT NULL
 );
 
--- Member Notifications Table
+CREATE TABLE Trainers (
+    trainer_name VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL
+);
+
 CREATE TABLE MemberNotifications (
     member_name VARCHAR(255) REFERENCES Members(member_name),
+    notification_text TEXT NOT NULL
+);
+
+CREATE TABLE TrainerNotifications (
+    trainer_name VARCHAR(255) REFERENCES Trainers(trainer_name),
     notification_text TEXT NOT NULL
 );
 
@@ -44,20 +53,6 @@ CREATE TABLE Reports (
     report_id SERIAL PRIMARY KEY,
     member_name VARCHAR(255) REFERENCES Members(member_name),
     report_text TEXT NOT NULL
-);
-
--- Trainers Table
-CREATE TABLE Trainers (
-    trainer_name VARCHAR(255) PRIMARY KEY,
-    password VARCHAR(255) NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL
-);
-
--- Trainer Notifications Table
-CREATE TABLE TrainerNotifications (
-    trainer_name VARCHAR(255) REFERENCES Trainers(trainer_name),
-    notification_text TEXT NOT NULL
 );
 
 CREATE TABLE Sessions (

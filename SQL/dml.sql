@@ -1,6 +1,6 @@
 INSERT INTO Admins (admin_name, password)
 VALUES
-('Admin', 'IAMADMIN');
+('ADMIN', 'IAMADMIN');
 
 INSERT INTO Trainers (trainer_name, password, start_time, end_time)
 VALUES

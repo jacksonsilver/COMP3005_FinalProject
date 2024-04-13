@@ -21,11 +21,11 @@ def createMember(connection, name, password):
     print("Billing info Approved.")
 
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO Billings (member_name, billing_text) VALUES (%s, %s)", (name, f"Member {name}'s $100 membership sign up fee, billing data: {billing_data}"))
+    cursor.execute("INSERT INTO Members (member_name, password, current_weight, goal_weight, goal_date) VALUES (%s, %s, %s, %s, %s)", (name, password, current_weight, goal_weight, goal_date))
     cursor.close()
 
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO Members (member_name, password, current_weight, goal_weight, goal_date) VALUES (%s, %s, %s, %s, %s)", (name, password, current_weight, goal_weight, goal_date))
+    cursor.execute("INSERT INTO Billings (member_name, billing_text) VALUES (%s, %s)", (name, f"Member {name}'s $100 membership sign up fee, billing data: {billing_data}"))
     cursor.close()
 
 def showMemberMenu(connection, current_user):
